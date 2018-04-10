@@ -1,0 +1,104 @@
+body{
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	color: #37474F;
+}
+header{
+	text-align: center;
+	width: 100%;
+}
+#main-index{
+	width: 100%;
+}
+#form{
+	padding: 7%;
+	margin: 5%;
+	margin-bottom: 100px;
+	border: 1px solid #CFD8DC;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#list{
+	list-style-type: none;
+	padding: 0;
+}
+#list-item{
+	line-height: 1.2em;
+	display: flex;
+	justify-content: flex-start;
+}
+#toggle{
+	margin-right: 10px;
+	flex: 1;
+}
+#name{
+	flex: 6;
+}
+#author{
+	font-size: 0.8em;
+	font-style: italic;
+	flex: 2;
+}
+#price{
+	color: #009688;
+	flex: 1;
+}
+.total{
+	color: #D32F2F;
+	width: 100%;
+}
+#total-price{
+	float: right;
+	margin-top: 15px;
+}
+#submit-btn{
+	float: right;
+	margin-right: 5%;
+	margin-left: 5%;
+	padding: 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: bold;
+	color: #E0F2F1;
+	background-color: #009688;
+}
+#submit-btn:hover{
+	color: #009688;
+	background-color: #E0F2F1;
+}
+#back-btn{
+	text-decoration: none;
+	font-weight: bold;
+	color: #69F0AE;
+}
+#main-postSubmit{
+	padding: 5%;
+	margin: 5%;
+	border: 1px solid #CFD8DC;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	
+}
+#added-items{
+	list-style-type: none;
+}
+.messages{
+	opacity: 0.8;
+	margin: 5%;
+	padding: 15px;
+	border-radius: 5px;
+	background-color: #FFCDD2;
+	color: #D32F2F;
+	text-align: center;
+	list-style-type: none;
+}
+#added-item{
+	margin-left: 10px;
+}
+#added-items li{
+	line-height: 1.2em;
+}
+#icon{
+	color: #D32F2F;
+}

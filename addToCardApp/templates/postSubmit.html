@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Add To My Card | BackboneJS</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}"/>
+</head>
+<body>
+	<header>
+		<h1>Add To My Card App</h1>
+	</header>
+	<main id="main-postSubmit">
+	<div>
+		<p>
+			<strong>You have chosen these books to buy:</strong>
+			<br><br>
+			<ul id="added-items">
+			{% for item in items %}
+				<li><span id="icon">&#10032; </span><span id="added-item">{{item}}</span></li><br>
+			{% endfor %}
+			</ul>
+		</p>
+	</div>
+<a id="back-btn" href="{{url_for('start')}}">&#11184; back</a>
+	</main>
+
+</body>
+</html>

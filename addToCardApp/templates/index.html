@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Add To My Card | BackboneJS</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}"/>
+</head>
+<body>
+	<header>
+		<h1>Add To My Card App</h1>
+	</header>
+	<main id="main-index">
+			<div>
+			{%with messages = get_flashed_messages()%}
+				{%if messages%}
+					<ul class="messages">
+					{%for message in messages%}
+						<li><strong>&#9760; {{message}}</strong></li>
+					{%endfor%}
+					</ul>
+				{%endif%}
+			{%endwith%}	
+		</div>
+		<form id="form" method="POST" action="{{url_for('submitted')}}">
+			<ul id="list"></ul>
+			<div class="total">
+				<input class="submitBtn" id="submit-btn" type="submit" value="Add">
+				<span id="total-price">Total: <span id="total">$ 0.00</span></span>
+			</div>						
+		</form>
+	</main>
+
+<script type="text/template" id="item-template">
+	<% _.each(items, function(item){ %>
+		<li id="list-item">
+			<input class="toggle" id="toggle" type="checkbox" name="itemName" value="<%- item.name %>" data-name="<%- item.name %>"><span id="name"><%- item.name %> </span><span id="author"><%- item.author %></span><span id="price">$ <%- item.price %></span>
+		</li><br>
+	<% }); %>
+</script>
+
+<script src="{{url_for('static', filename='node_modules/jquery/dist/jquery.min.js')}}"></script>
+<script src="{{url_for('static', filename='node_modules/underscore/underscore.js')}}"></script>
+<script src="{{url_for('static', filename='node_modules/backbone/backbone.js')}}"></script>
+
+<script src="{{url_for('static', filename='js/models/item-model.js')}}"></script>
+<script src="{{url_for('static', filename='js/collections/item-collection.js')}}"></script>
+<script src="{{url_for('static', filename='js/routers/router.js')}}"></script>
+<script src="{{url_for('static', filename='js/views/list-view.js')}}"></script>
+<script src="{{url_for('static', filename='js/views/app-view.js')}}"></script>
+<script src="{{url_for('static', filename='js/app.js')}}"></script>
+</body>
+</html>
