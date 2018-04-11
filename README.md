@@ -62,7 +62,7 @@ Create a new file inside the root directory of the project and call it for examp
 
 0- From the flask framework we are importing:
 
-**the Class Flask** that we will be using in the next line the create a new instance of the app.
+**the Class Flask** that we will be using in the next line to create a new instance of the app.
 
 **the render_template function** that we will be using to render HTML files and passing python variables to it whenever needed.
 
@@ -74,7 +74,7 @@ Create a new file inside the root directory of the project and call it for examp
 
 	from flask import Flask, render_template, request, url_for, redirect
 	
-1- The following line of code creates a new instance of the Flask class with the name of the running app. **__name__** is a special variable in python that have the value *__main__* if the app is running by the python interpreter or *__fileName__* if the file is imported in another project.
+1- The following line of code creates a new instance of the Flask class with the name of the running app. **_name_** is a special variable in python that have the value **_main_** if the app is running by the python interpreter or **_fileName_** if the file is imported in another project.
 
 	app = Flask(__name__)
 
@@ -85,11 +85,11 @@ Create a new file inside the root directory of the project and call it for examp
 		return render_template('index.html')
    	
    
-3- Identically to the previous function we are configuring the URL for the after submitting page to be '/submitted' and adding the methods=['GET', 'POST'] argument to response to both GET and POST responses. Now the *submitted()* function which is associated to the '/submitted' URL, check the type of request first of all:
+3- Identically to the previous function we are configuring the URL for the after submitting page to be '/submitted' and adding the methods=['GET', 'POST'] argument to response to both GET and POST responses. Now the *submitted()* function, which is associated to the '/submitted' URL, will check the type of request first of all:
 
 If the request is a **GET request** the function redirect the user to the starting page --> redirect(url_for('start')).
 
-If the request is a **POST request** we will be asking for the submitted data using **request.form.getlist('valueOfNameAttr')** function, if it returns null, which mean the user did not select any item we will stay at the same page otherwhise we will render to the *postSubmit* template and pass in the selected item to be displayed. 
+If the request is a **POST request** we will be asking for the submitted data using **request.form.getlist('valueOfNameAttr')** function, if it returns null, which means that the user did not select any item, we will stay at the same page, otherwhise the application render the *postSubmit* template and pass in the selected item to be displayed. 
    
 	@app.route('/submitted', methods=['GET', 'POST'])
 	def submitted():
@@ -104,7 +104,7 @@ If the request is a **POST request** we will be asking for the submitted data us
 
 4- Finally, run the app.
 
-If the special variable __name__ have the value __main__ that mean that the current file is the main project and in that case we will be running the app *app.run()*, and in order to be able to visualize changes automatically without reloading the page every time we enable the debug mode *app.debug = True*.
+If the special variable **_name_** have the value **_main_** that mean that the current file is the main project and in that case we will be running the app *app.run()*, and in order to be able to visualize changes automatically without reloading the page every time we enable the debug mode *app.debug = True*.
 
 	 if __name__=='__main__':
 
@@ -135,7 +135,7 @@ Flask knows that your HTML files are in the **templates** folder and your CSS an
 
 Now the reason there are *collections, models, routers and views* folders inside the js folder is that we will be using **BackboneJS** for the client-sid part of the application.
 
-**Backone** is one of the amazing organizational library that belong to the **MV* pattern family**. As any other organizational library or framework, backbone is made of these five modules:
+**Backone** is one of the amazing organizational library that belong to the **MV * pattern family**. As any other organizational library or framework, backbone is made of these five modules:
 
 1- Views                 
 
@@ -203,7 +203,7 @@ Inside the body we will be having a form to be submitted, the form composed of a
 
 The attribute **action** in the form element take a value of **{{url_for('submitted')}}**:
 
-- {{..}}, {%..%} : This syntax is called **HTML Escape**. Flask is pre-configured and its templates recogonize this code, **{%..%}** used to execute code, **{{..}}** used to print code. Here we are using *{{url_for('submitted')}}* to print the URL associated to the **submitted** function, that way when the submit the form the application execute the function **submitted**.
+- {{..}}, {%..%} : This syntax is called **HTML Escape**. Flask is pre-configured and its templates recogonize this code, **{%..%}** used to execute code, **{{..}}** used to print code. Here we are using *{{url_for('submitted')}}* to print the URL associated to the **submitted** function, that way when the user submit the form the application execute the function **submitted**.
 
 The list of items are added dynamically to the form once we configure the model and filled the collection, so we will be having a template that will be rendred for each item in the collection:
 
@@ -226,9 +226,9 @@ The rest of files in our backbone project: model, collection, router, view and a
       
 **var app = app || {}**: test if the app have already been created otherwise it take a value {}.
 
-**IIFE**: Immediate Invoked Function Expression, where the code goes.
+**IIFE**: Immediate Invoked Function Expression, where the code goes and immediately executed.
 
-The first thing we need to develop is our Model, in our case it is a book Model with the following properties:
+The first component we need to develop is our Model, in our case it is a book Model with the following properties:
 
 	app.Item = Backbone.Model.extend({
 		default:{
@@ -341,7 +341,7 @@ Notice, with **HTML Escaping** we have access to python variables and functions.
 	
 #### Iteration 5: styling
 
-First, we will start by passing **flash** message on the starting page to alert the user whenever they try to submit the form without selecting any item. First we will import *flash* from *flask*, configuring a **secret_key** before running the app then passing the message we want to display in the function **flash('message to display')** and configuring the client-side where we will be displaying the message.
+First, we will start by passing **flash** message on the starting page to alert the users whenever they try to submit the form without selecting any item. First we will import *flash* from *flask*, configuring a **secret_key** before running the app then passing the message we want to display in the function **flash('message to display')** and configuring the client-side where we will be displaying the message.
 
 So in *submit.py* we will add the following changes:
 
@@ -371,5 +371,7 @@ And in *index.html*, where we will be displaying our message, we will be calling
 			</ul>
 		{%endif%}
 	{%endwith%}	
+
+**Note:** For production we should make the *secret_key* more secure than just a passing a simple sting!
 
 Now the rest of styling of the application and these flash messages is pure CSS that goes inside the **main.css** file, there is nothing special about that!
