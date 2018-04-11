@@ -372,6 +372,6 @@ And in *index.html*, where we will be displaying our message, we will be calling
 		{%endif%}
 	{%endwith%}	
 
-**Note:** For production we should make the *secret_key* more secure than just a passing a simple sting!
+**Note:** For production we should make the *secret_key* more secure than just a passing a simple string!
 
 Now the rest of styling of the application and these flash messages is pure CSS that goes inside the **main.css** file, there is nothing special about that!
