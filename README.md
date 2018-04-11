@@ -364,9 +364,9 @@ And in *index.html*, where we will be displaying our message, we will be calling
 
 	{%with messages = get_flashed_messages()%}
 		{%if messages%}
-			<ul class="messages">
+			<ul>
 			{%for message in messages%}
-				<li><strong>&#9760; {{message}}</strong></li>
+				<li>{{message}}</li>
 			{%endfor%}
 			</ul>
 		{%endif%}
