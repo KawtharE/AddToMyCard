@@ -18,9 +18,9 @@ Our development process is an **iteration process**, which allow us to have a wo
 
 Our first iteration consist at creating mock-ups for every page in the application and design URLs for each one. In our case, we only have two pages: the starting page where we will be displaying all items (**index.html**) and after submitting page (**postSubmit.html**) where we will be displaying the items chosen by the user.
 
-**Page:** index.html            **URL:** '/'
+**Page:** index.html -> **URL:** '/'
 
-**Page:** postSubmit.html       **URL:** '/submitted'
+**Page:** postSubmit.html -> **URL:** '/submitted'
 
 
 #### Iteration 2: configure routing
@@ -36,18 +36,27 @@ After installing Flask, lets get start configuring the routing in the back-end.
 Create a new file inside the root directory of the project and call it for example, as i am calling it, *submit.py*:
 
 
-    from flask import Flask
-    app = Flask(__name__)
+	from flask import Flask, render_template, request, url_for, redirect
+	app = Flask(__name__)
 
-    @app.route('/')
-    def start():
+	@app.route('/', methods=['GET', 'POST'])
+	def start():
+		return render_template('index.html')
 
-    @app.route('/submitted')
-    def submitted():
+	@app.route('/submitted', methods=['GET', 'POST'])
+	def submitted():
+		if request.method == 'POST':
+			items = request.form.getlist('itemName')
+			if items == []:
+				return render_template('index.html')
+			else:
+				return render_template('postSubmit.html', items=items)
+		else:
+			return redirect(url_for('start'))
 
-    if __name__=='__main__':
-      app.debug = True
-      app.run(host='0.0.0.0', port=5000)
+	if __name__=='__main__':
+		app.debug = True
+		app.run(host='0.0.0.0', port=5000)
 
 **Line by line:**
 
@@ -174,10 +183,10 @@ The rest of files in our backbone project: model, collection, router, view and a
       })();
       
       
-*var app = app || {}*: test if the app have already been created otherwise it take a value {}.
-*IIFE*: Immediate Invoked Function Expression, where code goes.
+**var app = app || {}**: test if the app have already been created otherwise it take a value {}.
+**IIFE**: Immediate Invoked Function Expression, where code goes.
 
-The first thing we need to develop is our Model, in our case it is a book with the following properties:
+The first thing we need to develop is our Model, in our case it is a book Model with the following properties:
 
 	app.Item = Backbone.Model.extend({
 		default:{
@@ -190,8 +199,9 @@ The first thing we need to develop is our Model, in our case it is a book with t
 			this.set('checked', !this.get('checked'));
 		}
 	});
-      
-Next, from that model we will be creating a Collection that will be rendred next:
+The *toggle* function will update the value of *checked* property every time the item is selected or deselected.
+
+Next, from the previous Model we will be creating a Collection of Models that will be rendred next in a list:
 
 	var Items = Backbone.Collection.extend({
 		model: app.Item,
@@ -207,9 +217,9 @@ Next, from that model we will be creating a Collection that will be rendred next
 		new app.Item({id:4, name: 'Deep Learning with Python ', author:'Francois Chollet', price: 42.78, checked: false})
 		]);
             
+The *checkedItems* returns all selected items in order to calculate the Total price.            
             
-            
-Now that we have all data that we need, we will start render them in the DOM by making a view for each item and then render all of them to the DOM:
+Now that we have all data we need, we will start render them in the DOM by making a view for each item and then render all of them to the DOM:
 
 	app.ListView = Backbone.View.extend({
 		el: '#list',
@@ -235,14 +245,19 @@ Now that we have all data that we need, we will start render them in the DOM by 
 			$('#total').html('$ '+total.toFixed(2));
 		}
 	});
-      
-     
+	
+In this view we are adding a **click event** that calls the *toggle* fuction every time the item is selected. The *toggle* function is responsible on updating the *checked* value of the corresponding item and updating the total price.
+
+For the **render** function we are passing the whole collection of items in JSON format (app.items.toJSON()) to be displayed using the *item-template*.
+    
+Next, we have the **AppView** view that grab each element of the DOM: form, list and total and render them after instantiate the **app.ListView** view, which is responsible about rendering each item of the collection.
+Any changes affect the collection of items (app.items) will make the view re-render since we are configuring a **change** event on the collection: *this.listenTo(app.items.toJSON(), 'change', this.render)*
+
      var AppView = Backbone.View.extend({
             el: '#form',
 
             initialize: function(){
                   this.listenTo(app.items.toJSON(), 'change', this.render);
-                  this.listenTo(app.items.toJSON(), 'all', this.render);
                   app.listView = new app.ListView();
                   this.render();
             },
@@ -258,12 +273,56 @@ Now that we have all data that we need, we will start render them in the DOM by 
             }
       });
       
- to kick off the application we instantiate the AppView variable inside the app.js file:
+ to kick off the application we instantiate the **AppView** variable inside the **app.js** file:
  
-      var app = app || {};
+	 var app = app || {};
 
-      $(function(){
-            'use strict';
+	 $(function(){
+	    'use strict';
 
-            var appView = new AppView();
-      });
+	    var appView = new AppView();
+	 });
+
+Finally, our **postSubmit.html** file will display all selected items:
+
+	<ul>
+		{% for item in items %}
+			<li>{{item}}</li>
+		{% endfor %}
+	</ul>
+	
+Notice, with **HTML escaping** we have access to python variables and functions. **items** is an array that we have passed from flask when using **render_template** function:
+
+	render_template('postSubmit.html', items=items)
+	
+#### Iteration 5: styling
+
+First, we will start by passing **flash** message on the page to alert the user when trying to submit the form without selecting any item. First we will import flash from flask, configuring a **secret_key** then passing the message you want display in the backend side and at the same time configuring the client-side where we will be displaying the message.
+
+So in *submit.py* we will add the following changes:
+
+	from flask import ..., flash
+	...
+	@app.route('/submitted', methods=['GET', 'POST'])
+	def submitted():
+			...
+			if items == []:
+				flash('You need to choose one or more items to add it to your card!')
+				...
+			...
+
+
+	if __name__=='__main__':
+		app.secret_key = 'secret_key'
+		...
+And in *index.html* where we will be displaying our message, we will be calling the **get_flashed_messages()** function which will return all message we have setup in python file:
+
+	{%with messages = get_flashed_messages()%}
+		{%if messages%}
+			<ul class="messages">
+			{%for message in messages%}
+				<li><strong>&#9760; {{message}}</strong></li>
+			{%endfor%}
+			</ul>
+		{%endif%}
+	{%endwith%}	
